@@ -13,10 +13,20 @@ var generateBtn = document.querySelector("#generate");
 
 function generatePassword() {
   let characters = ""; //set variable of characters that password generator can choose from
-  let passwordLength = 20; //set variable for password length determined by user
+  let passwordLength;
   let finalPassword = "";
 
-  //ternary operators to determine what characters to add to the string of available characters
+
+  do {
+    passwordLength = Number(prompt("Please enter a password length. (no less than 8 characters and no more than 128)"));
+  }while(isNaN(passwordLength) || (passwordLength < 8 || passwordLength > 128)) //checks if password is a number or between 8 and 128 characters
+
+  includeUppercase = confirm("Include uppercase letters in the password?");
+  includeLowercase = confirm("Include lowercase letters in the password?");
+  includeNumbers = confirm("Include numbers in the password?");
+  includeSymbols = confirm("Include special characters in the password?");
+
+  //ternary operators to determine what characters to add to the string of available characters (if statements were too messy)
    includeUppercase ? characters += letters.toUpperCase() : characters;
    includeLowercase ? characters += letters : characters;
    includeNumbers ? characters += numeric : characters;
@@ -28,9 +38,12 @@ function generatePassword() {
       finalPassword += characters[Math.floor(Math.random() * characters.length)]; //pick a random character from the array and add it to the password for each character
     }
   } else {
-    alert("You must select at least one charater type to include in your password!");
+    alert("You must select at least one charater type to include in your password!");//displays this message if the array is empty, meaning the user has not chosen a character type
     generatePassword();
+    
   }
+
+  return finalPassword;
 }
 
 // Write password to the #password input
@@ -45,4 +58,3 @@ function writePassword() {
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
 
-console.log(generatePassword());
